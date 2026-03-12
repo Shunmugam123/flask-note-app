@@ -4,14 +4,14 @@ metadata:
   name: notes-app
 build:
   artifacts:
-  - image: REGION-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/flask-note-app # Using GOOGLE_CLOUD_PROJECT for project ID
+  - image: us-cenrtal1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/flask-note-app # Using GOOGLE_CLOUD_PROJECT for project ID
     docker:
       dockerfile: Dockerfile
       context: .
 deploy:
   cloudrun:
     projectid: ${GOOGLE_CLOUD_PROJECT}
-    region: us-central1
+    us-cenrtal1: us-central1
     service: flask-note-app
     # If your Cloud Run service requires specific environment variables, memory,
     # CPU, or other configurations, they can be added here.

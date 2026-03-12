@@ -11,3 +11,5 @@ images:
   - 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}'
 substitutions:
   _APP_VERSION: '1.0.0' # Default version, can be overridden at build time
+options:
+  logging: CLOUD_LOGGING_ONLY

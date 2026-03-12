@@ -1,29 +1,13 @@
+# cloudbuild.yaml
 steps:
-# Step 1: Build the Docker image
-- name: 'us-cenrtal1docker.pkg.dev/cloud-builders/docker'
-  args: ['build', '-t', 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA', '.']
-
-# Step 2: Push the Docker image to Google Container Registry
-- name: 'us-cenrtal1docker.pkg.dev/cloud-builders/docker'
-  args: ['push', 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA']
-
-
-
-# Step 3: Create a Cloud Deploy release
-- name: 'us-cenrtal1docker.pkg.dev/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args:
-  - 'deploy'
-  - 'releases'
-  - 'create'
-  - 'rel-${BUILD_ID}' # Unique release name
-  - '--delivery-pipeline=flask-note-app-pipeline' # Name of the delivery pipeline
-  - '--region=us-central1' # Region where the delivery pipeline is
-  - '--images=flask-note-app=us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
-  - '--description=Cloud Build automated release'
-
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}', '.']
+    dir: 'flask-note-app'
+  # Push the Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}']
 images:
-- 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}'
+substitutions:
+  _APP_VERSION: '1.0.0' # Default version, can be overridden at build time

@@ -1,23 +1,44 @@
-apiVersion: skaffold/v2beta28
+apiVersion: skaffold/v4beta7
 kind: Config
 metadata:
-  name: notes-app
+  name: flask-note-app
+deploy:
+  cloudrun: {}
+manifests:
+  rawYaml:
+  - apiVersion: serving.knative.dev/v1
+    kind: Service
+    metadata:
+      name: flask-note-app
+      annotations:
+        run.googleapis.com/client-name: "cloud-code"
+    spec:
+      template:
+        spec:
+          containers:
+          - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:1.0.0 # Placeholder, Cloud Build will update this
+            ports:
+            - containerPort: 8080
+            env:
+            - name: PORT
+              value: "8080"
+# This section configures Cloud Deploy integration
+# You will need to replace the placeholders below with your actual values.
+# For more information, see: https://cloud.google.com/deploy/docs/create-deployspec
+deployers:
+- name: clouddeploy
+  clouddeploy:
+    project: ${PROJECT_ID}
+    region: us-central1 # e.g., us-central1
+    deliveryPipeline: flask-note-app-delivery-pipeline # Replace with your Cloud Deploy Delivery Pipeline name
+    target: dev # Replace with your Cloud Deploy Target name
+# This build section is for Skaffold to build locally if needed,
+# but for Cloud Build integration, the image will be pulled from Artifact Registry.
 build:
   artifacts:
-  - image: us-cenrtal1docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/flask-note-app # Using GOOGLE_CLOUD_PROJECT for project ID
+  - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app
     docker:
       dockerfile: Dockerfile
-      context: .
-deploy:
-  cloudrun:
-    projectid: ${GOOGLE_CLOUD_PROJECT}
-    region: us-central1
-    service: flask-note-app
-    # If your Cloud Run service requires specific environment variables, memory,
-    # CPU, or other configurations, they can be added here.
-    # For example:
-    # concurrency: 80
-    # memory: 512Mi
-    # env:
-    # - name: MY_VARIABLE
-    #   value: "my_value"
+  tagPolicy:
+    envTemplate:
+      template: "{{.APP_VERSION}}"

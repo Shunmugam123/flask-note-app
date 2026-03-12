@@ -2,8 +2,7 @@
 steps:
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}', '.']
-    dir: 'flask-note-app'
+    args: ['build', '-f', 'Dockerfile', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}', 'flask-note-app']
   # Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}']

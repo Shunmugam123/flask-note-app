@@ -1,16 +1,16 @@
 steps:
 # Step 1: Build the Docker image
-- name: 'us-cenrtal1-docker.pkg.dev/cloud-builders/docker'
-  args: ['build', '-t', 'us-cenrtal1-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA', '.']
+- name: 'us-cenrtal1docker.pkg.dev/cloud-builders/docker'
+  args: ['build', '-t', 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA', '.']
 
 # Step 2: Push the Docker image to Google Container Registry
-- name: 'us-cenrtal1-docker.pkg.dev/cloud-builders/docker'
-  args: ['push', 'us-cenrtal1-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA']
+- name: 'us-cenrtal1docker.pkg.dev/cloud-builders/docker'
+  args: ['push', 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA']
 
 
 
 # Step 3: Create a Cloud Deploy release
-- name: 'us-cenrtal1-docker.pkg.dev/google.com/cloudsdktool/cloud-sdk'
+- name: 'us-cenrtal1docker.pkg.dev/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
   - 'deploy'
@@ -18,12 +18,12 @@ steps:
   - 'create'
   - 'rel-${BUILD_ID}' # Unique release name
   - '--delivery-pipeline=flask-note-app-pipeline' # Name of the delivery pipeline
-  - '--us-cenrtal1=us-central1' # us-cenrtal1 where the delivery pipeline is
-  - '--images=flask-note-app=us-cenrtal1-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
+  - '--region=us-central1' # Region where the delivery pipeline is
+  - '--images=flask-note-app=us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
   - '--description=Cloud Build automated release'
 
 images:
-- 'us-cenrtal1-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
+- 'us-cenrtal1docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from google.cloud import firestore
 
 app = Flask(__name__)
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 
 # Initialize Firestore DB client
 # Assumes GOOGLE_APPLICATION_CREDENTIALS environment variable is set

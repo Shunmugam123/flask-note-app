@@ -1,0 +1,16 @@
+# cloudbuild.yaml
+steps:
+  # Build the Docker image, tag with SHORT_SHA and 'latest'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-f', 'flask-note-app/Dockerfile', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${SHORT_SHA}', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:latest', 'flask-note-app']
+  # Push the Docker image tagged with SHORT_SHA
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${SHORT_SHA}']
+  # Push the Docker image tagged with 'latest'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:latest']
+images:
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${SHORT_SHA}'
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY

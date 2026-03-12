@@ -1,0 +1,24 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: flask-note-app
+deploy:
+  cloudrun: {}
+manifests:
+  rawYaml:
+  - apiVersion: serving.knative.dev/v1
+    kind: Service
+    metadata:
+      name: flask-note-app # Replace with your desired Cloud Run service name
+      annotations:
+        run.googleapis.com/client-name: "cloud-code"
+    spec:
+      template:
+        spec:
+          containers:
+          - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:latest # Image from Artifact Registry, always use latest
+            ports:
+            - containerPort: 8080
+            env:
+            - name: PORT
+              value: "8080"

@@ -1,24 +1,23 @@
-apiVersion: skaffold/v4beta7
+apiVersion: skaffold/v2beta28
 kind: Config
 metadata:
-  name: flask-note-app
+  name: notes-app
+build:
+  artifacts:
+  - image: gcr.io/${GOOGLE_CLOUD_PROJECT}/gemini-notes-app # Using GOOGLE_CLOUD_PROJECT for project ID
+    docker:
+      dockerfile: Dockerfile
+      context: .
 deploy:
-  cloudrun: {}
-manifests:
-  rawYaml:
-  - apiVersion: serving.knative.dev/v1
-    kind: Service
-    metadata:
-      name: flask-note-app # Replace with your desired Cloud Run service name
-      annotations:
-        run.googleapis.com/client-name: "cloud-code"
-    spec:
-      template:
-        spec:
-          containers:
-          - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:latest # Image from Artifact Registry, always use latest
-            ports:
-            - containerPort: 8080
-            env:
-            - name: PORT
-              value: "8080"
+  cloudrun:
+    projectid: ${GOOGLE_CLOUD_PROJECT}
+    region: us-central1
+    service: gemini-notes-app
+    # If your Cloud Run service requires specific environment variables, memory,
+    # CPU, or other configurations, they can be added here.
+    # For example:
+    # concurrency: 80
+    # memory: 512Mi
+    # env:
+    # - name: MY_VARIABLE
+    #   value: "my_value"

@@ -4,7 +4,7 @@ metadata:
   name: notes-app
 build:
   artifacts:
-  - image: gcr.io/${GOOGLE_CLOUD_PROJECT}/flask-note-app # Using GOOGLE_CLOUD_PROJECT for project ID
+  - image: REGION-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/flask-note-app # Using GOOGLE_CLOUD_PROJECT for project ID
     docker:
       dockerfile: Dockerfile
       context: .

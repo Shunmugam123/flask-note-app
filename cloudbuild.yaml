@@ -1,16 +1,16 @@
 steps:
 # Step 1: Build the Docker image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/flask-note-app:$COMMIT_SHA', '.']
+- name: 'REGION-docker.pkg.dev/cloud-builders/docker'
+  args: ['build', '-t', 'REGION-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA', '.']
 
 # Step 2: Push the Docker image to Google Container Registry
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/flask-note-app:$COMMIT_SHA']
+- name: 'REGION-docker.pkg.dev/cloud-builders/docker'
+  args: ['push', 'REGION-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA']
 
 
 
 # Step 3: Create a Cloud Deploy release
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'REGION-docker.pkg.dev/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
   - 'deploy'
@@ -19,11 +19,11 @@ steps:
   - 'rel-${BUILD_ID}' # Unique release name
   - '--delivery-pipeline=flask-note-app-pipeline' # Name of the delivery pipeline
   - '--region=us-central1' # Region where the delivery pipeline is
-  - '--images=flask-note-app=gcr.io/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
+  - '--images=flask-note-app=REGION-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
   - '--description=Cloud Build automated release'
 
 images:
-- 'gcr.io/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
+- 'REGION-docker.pkg.dev/$PROJECT_ID/flask-note-app:$COMMIT_SHA'
 
 options:
   logging: CLOUD_LOGGING_ONLY

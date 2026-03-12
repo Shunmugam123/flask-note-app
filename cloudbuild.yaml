@@ -1,0 +1,13 @@
+# cloudbuild.yaml
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}', '.']
+    dir: 'flask-note-app'
+  # Push the Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}']
+images:
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app:${_APP_VERSION}'
+substitutions:
+  _APP_VERSION: '1.0.0' # Default version, can be overridden at build time

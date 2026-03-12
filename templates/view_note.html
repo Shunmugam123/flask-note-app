@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Note</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #0056b3; }
+        .note-content { background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .note-content h2 { margin-top: 0; color: #333; }
+        .note-content p { line-height: 1.6; }
+        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+        .version { text-align: right; margin-top: 20px; font-size: 0.8em; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Note</h1>
+        <div class="note-content">
+            <h2>{{ note.title }}</h2>
+            <p>{{ note.content }}</p>
+        </div>
+        <a href="/" class="back-link">Back to Notes</a>
+        <div class="version">App Version: {{ app_version }}</div>
+    </div>
+</body>
+</html>

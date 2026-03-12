@@ -36,7 +36,7 @@ deployers:
 # but for Cloud Build integration, the image will be pulled from Artifact Registry.
 build:
   artifacts:
-  - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/app
+  - image: us-central1-docker.pkg.dev/${PROJECT_ID}/flask-note-app-repo/flask-note-app
     docker:
       dockerfile: Dockerfile
   tagPolicy:
